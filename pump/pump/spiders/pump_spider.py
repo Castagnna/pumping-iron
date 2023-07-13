@@ -7,18 +7,19 @@ class PumpSpider(scrapy.Spider):
     allowed_domains = ["paciente.me"]
 
     def start_requests(self):
-        urls = [
-            "https://paciente.me/evolucao_antropometria.php?id=107721031806",
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+        user_id = "107721031806"
+        url = f"https://paciente.me/evolucao_antropometria.php?id={user_id}"
+        yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
+        user_id = "107721031806"
         xpath = '//script[contains(., "dados_antropometria")]//text()'
         pattern = r'dados_antropometria = (\[.+\]);'
         values = response.xpath(xpath).re(pattern)
-        if values[0]:
-            yield {"dados_antropometria": json.loads(values[0])}
+        measurements = json.loads(values[0])
+        if measurements:
+            for measurement in measurements:
+                measurement["user_id"] = user_id
+                yield measurement
         else:
             self.logger.warning("Value not found.")
-    
