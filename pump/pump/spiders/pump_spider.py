@@ -23,4 +23,3 @@ class PumpSpider(scrapy.Spider):
                 yield measurement
         else:
             self.logger.warning("Value not found.")
-    

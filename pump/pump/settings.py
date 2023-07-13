@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from env.mongo import user, password
 
 BOT_NAME = "pump"
 
@@ -62,10 +63,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "pump.pipelines.PumpPipeline": 300,
-#    "pump.pipelines.MongoDBPipeline": 300,
-# }
+ITEM_PIPELINES = {
+   "pump.pipelines.PumpPipeline": 300,
+   "pump.pipelines.MongoDBPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -93,6 +94,6 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-MONGODB_URI = "mongodb+srv://castagna:castagna@pump.u3anmtq.mongodb.net/?retryWrites=true&w=majority"
+MONGODB_URI = f"mongodb+srv://{user}:{password}@pump.u3anmtq.mongodb.net/?retryWrites=true&w=majority"
 MONGODB_DATABASE = "pump"
 MONGODB_COLLECTION = "anthropometry"

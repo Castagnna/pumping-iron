@@ -6,11 +6,19 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
 from pymongo import MongoClient
 
 class PumpPipeline:
     def process_item(self, item, spider):
-        return item
+        adapter = ItemAdapter(item)
+        date = adapter.get("dataOrdem")
+        if date:
+            #20221031
+            adapter["dataOrdem"] = "-".join([date[:4], date[4:6], date[6:]])
+            return item
+        else:
+            raise DropItem(f"Missing dataOrdem in {item}")
 
 
 class MongoDBPipeline:
