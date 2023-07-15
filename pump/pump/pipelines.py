@@ -8,14 +8,49 @@
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 from pymongo import MongoClient
+from datetime import datetime
+
 
 class PumpPipeline:
+    def __init__(self):
+        self.floats = [
+            "massa",
+            "dobra_triceptal",
+            "dobra_subescapular",
+            "dobra_toraxica",
+            "dobra_axilar",
+            "dobra_suprailiaca",
+            "dobra_abdominal",
+            "dobra_coxa",
+            "c_torax",
+            "c_ombro",
+            "c_cintura",
+            "c_abdomen",
+            "c_quadril",
+            "c_bracorelaxado",
+            "c_bracocontraido",
+            "c_antebraco",
+            "c_coxamedial",
+            "c_panturrilha",
+            "massaLivre",
+            "imc",
+            "mlg",
+            "gc",
+            "peso_g",
+            "peso_r",
+            "somatorio",
+            "razao",
+        ]
+
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         date = adapter.get("dataOrdem")
         if date:
-            #20221031
-            adapter["dataOrdem"] = "-".join([date[:4], date[4:6], date[6:]])
+            # Perform data type conversions
+            adapter["dataOrdem"] = datetime.strptime(date, "%Y%m%d")
+            adapter["estatura"] = int(item.get("estatura", 0))
+            for f in self.floats:
+                adapter[f] = float(item.get(f, 0.0))
             return item
         else:
             raise DropItem(f"Missing dataOrdem in {item}")
@@ -30,9 +65,9 @@ class MongoDBPipeline:
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
-            uri=crawler.settings.get('MONGODB_URI'),
-            database=crawler.settings.get('MONGODB_DATABASE'),
-            collection=crawler.settings.get('MONGODB_COLLECTION')
+            uri=crawler.settings.get("MONGODB_URI"),
+            database=crawler.settings.get("MONGODB_DATABASE"),
+            collection=crawler.settings.get("MONGODB_COLLECTION"),
         )
 
     def open_spider(self, spider):
