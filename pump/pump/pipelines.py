@@ -14,7 +14,6 @@ class PumpPipeline:
         adapter = ItemAdapter(item)
         date = adapter.get("dataOrdem")
         if date:
-            #20221031
             adapter["dataOrdem"] = "-".join([date[:4], date[4:6], date[6:]])
             return item
         else:
