@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
 from pymongo import MongoClient
 
 user = "foreigner"
@@ -35,5 +34,6 @@ measurements = list(cursor)
 
 df = pd.DataFrame(data=measurements).drop(columns={"_id"})
 
+st.write("stringggg")
 st.write(df)
 st.table(df)
