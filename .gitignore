@@ -129,6 +129,7 @@ env.bak/
 venv.bak/
 webscrap/
 .vscode
+.streamlit/
 
 # Spyder project settings
 .spyderproject
