@@ -2,11 +2,11 @@ import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 
-user = st.secrets.mongo.user
-password = st.secrets.mongo.password
 
 @st.cache_resource
 def init_connection():
+    user = st.secrets.mongo.user
+    password = st.secrets.mongo.password
     return MongoClient(f"mongodb+srv://{user}:{password}@pump.u3anmtq.mongodb.net/?retryWrites=true&w=majority")
 
 client = init_connection()
@@ -31,10 +31,23 @@ def get_data():
     }
     anthropometry = client.pump.anthropometry
     items = anthropometry.find(where, select)
-    return pd.DataFrame(data=list(items)).drop(columns={"_id"})
+    return pd.DataFrame(data=list(items)).drop(columns={"_id"}).set_index("dataOrdem")
 
 df = get_data()
 
-st.write("stringGgg")
-st.write(df)
-st.table(df)
+attributes = st.multiselect(
+    'Select attributes',
+    df.columns,
+    default=["gc"]
+)
+
+start, end = st.select_slider(
+    'Select a range of dates',
+    options=df.index,
+    value=(min(df.index), max(df.index))
+)
+
+df_ = df.loc[(df.index >= start) & (df.index <= end), attributes]
+st.table(df_.T)
+
+st.line_chart(df_)
