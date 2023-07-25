@@ -35,6 +35,8 @@ def get_data():
 
 df = get_data()
 
+st.title("Anthropometry dashboard")
+
 attributes = st.multiselect(
     'Select attributes',
     df.columns,
