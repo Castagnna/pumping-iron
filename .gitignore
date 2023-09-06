@@ -122,7 +122,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
-env/
+admin.py
 venv/
 ENV/
 env.bak/
@@ -130,6 +130,7 @@ venv.bak/
 webscrap/
 .vscode
 .streamlit/
+pumpenv/
 
 # Spyder project settings
 .spyderproject

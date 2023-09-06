@@ -6,7 +6,11 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-from env.mongo import user, password
+
+try:
+   from env.admin import user, password
+except ModuleNotFoundError:
+   from env.mongo import user, password
 
 BOT_NAME = "pump"
 
