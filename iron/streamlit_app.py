@@ -39,8 +39,8 @@ def prepare_data(df: DataFrame) -> DataFrame:
 
 
 @st.cache_data(ttl=600)
-def get_data(_client) -> DataFrame:
-    where = {"user_id": "107721031806"}
+def get_data(_client, _user_id) -> DataFrame:
+    where = {"user_id": _user_id}
     select = {
         "dataOrdem": 1,
         "massa": 1,
@@ -62,7 +62,7 @@ def get_data(_client) -> DataFrame:
 
 client = init_connection()
 
-df = get_data(client)
+df = get_data(client, "107721031806")
 
 st.title("Anthropometry dashboard")
 

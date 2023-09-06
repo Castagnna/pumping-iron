@@ -34,3 +34,11 @@ cd pump
 
 scrapy crawl pump_spider
 ```
+
+## Run the streamlit app locally
+
+```bash
+cd iron
+
+streamlit run streamlit_app.py
+```
