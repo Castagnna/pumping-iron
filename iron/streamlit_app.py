@@ -13,11 +13,10 @@ def init_connection():
     )
 
 
-client = init_connection()
-
 def to_date(df):
-    df['date'] = df['date'].dt.date
+    df["date"] = df["date"].dt.date
     return df
+
 
 def prepare_data(df: DataFrame) -> DataFrame:
     columns = {
@@ -35,15 +34,12 @@ def prepare_data(df: DataFrame) -> DataFrame:
         "c_quadril": "hip_cm",
     }
     return (
-        df.rename(columns=columns)
-        .pipe(to_date)
-        .drop(columns={"_id"})
-        .set_index("date")
+        df.rename(columns=columns).pipe(to_date).drop(columns={"_id"}).set_index("date")
     )
 
 
 @st.cache_data(ttl=600)
-def get_data() -> DataFrame:
+def get_data(_client) -> DataFrame:
     where = {"user_id": "107721031806"}
     select = {
         "dataOrdem": 1,
@@ -59,12 +55,14 @@ def get_data() -> DataFrame:
         "c_abdomen": 1,
         "c_quadril": 1,
     }
-    anthropometry = client.pump.anthropometry
+    anthropometry = _client.pump.anthropometry
     items = anthropometry.find(where, select)
     return prepare_data(pd.DataFrame(data=list(items)))
 
 
-df = get_data()
+client = init_connection()
+
+df = get_data(client)
 
 st.title("Anthropometry dashboard")
 
