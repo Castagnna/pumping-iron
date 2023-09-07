@@ -42,3 +42,21 @@ cd iron
 
 streamlit run streamlit_app.py
 ```
+
+### Local Streamlit's development stream
+
+```bash
+git checkout main
+
+git pull
+
+git checkout dev
+
+git fetch origin main:main
+
+git merge main
+
+git push origin dev
+```
+
+Acess the [Dev App](https://pumping-iron-dev.streamlit.app/)
