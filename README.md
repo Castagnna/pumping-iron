@@ -3,6 +3,14 @@ Web scraping and analysis of my body evolution results.
 
 Acess the [App](https://pumping-iron.streamlit.app/)
 
+## About
+This project is splitted in two parts *pump* and *iron*.
+```
+├── pumping-iron 
+│   ├── iron # reading mongo and plotting streamlit app.
+│   ├── pump # web scraping my anthropometric data and inserting into mongodb atlas.
+```
+
 ## Prepare your environment
 
 Install venv:
