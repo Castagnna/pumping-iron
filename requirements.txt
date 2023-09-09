@@ -33,6 +33,7 @@ packaging==23.1
 pandas==2.1.0
 parsel==1.8.1
 Pillow==9.5.0
+plotly==5.16.1
 Protego==0.3.0
 protobuf==4.24.2
 pyarrow==13.0.0
