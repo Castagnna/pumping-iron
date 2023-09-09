@@ -7,8 +7,8 @@ Acess the [App](https://pumping-iron.streamlit.app/)
 This project is splitted in two parts *pump* and *iron*.
 ```
 ├── pumping-iron 
-│   ├── iron # web scraping my anthropometric data and inserting into mongodb atlas.
-│   ├── pump # reading mongo and plotting streamlit app.
+│   ├── iron # reading mongo and plotting streamlit app.
+│   ├── pump # web scraping my anthropometric data and inserting into mongodb atlas.
 ```
 
 ## Prepare your environment

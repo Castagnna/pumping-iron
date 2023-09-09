@@ -1,9 +1,7 @@
 import streamlit as st
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from conn import mongo_client as client
 from data import get_data
+from figures import plot_two_axes_line_chart
 
 
 data = get_data(client, "107721031806")
@@ -11,22 +9,19 @@ data = get_data(client, "107721031806")
 st.title("Anthropometry dashboard")
 
 start, end = st.select_slider(
-    "Select a range of dates", options=data.index, value=(min(data.index), max(data.index))
+    "Select a range of dates",
+    options=data.index,
+    value=(min(data.index), max(data.index)),
 )
-attributes_y1 = st.multiselect("Select attributes Y1", data.columns, default=["body_fat"])
 
-attributes_y2 = st.multiselect("Select attributes Y2", data.columns, default=["mass_kg"])
+y1 = st.selectbox("Select Y1", data.columns, index=0)
 
-# st.table(filtered_y1.T)
+y2 = st.selectbox("Select Y2", data.columns, index=len(data.columns)-3)
 
-tab1, tab2 = st.tabs(["Line chart", "Bar chart"])
+filtered = data.loc[(data.index >= start) & (data.index <= end)]
 
+tab1, tab2 = st.tabs(["Comparison", "Trend"])
 with tab1:
-    filtered_y1 = data.loc[(data.index >= start) & (data.index <= end), attributes_y1]
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
-    fig = px.line(filtered_y1, markers=True)
-    st.plotly_chart(fig, use_container_width=True)
+    plot_two_axes_line_chart(filtered, y1, y2)
 with tab2:
-    filtered_y2 = data.loc[(data.index >= start) & (data.index <= end), attributes_y2]
-    fig = px.bar(filtered_y2)
-    st.plotly_chart(fig, use_container_width=True)
+    plot_two_axes_line_chart(filtered, y1, y2)
