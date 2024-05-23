@@ -5,10 +5,11 @@
 
 
 # useful for handling different item types with a single interface
+from datetime import datetime
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 from pymongo import MongoClient
-from datetime import datetime
+from pymongo.errors import DuplicateKeyError
 
 
 class PumpPipeline:
@@ -78,5 +79,8 @@ class MongoDBPipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection].insert_one(dict(item))
-        return item
+        try:
+            self.db[self.collection].insert_one(dict(item))
+            print(f"\tNew row inserted from date {item['dataAvaliacao']}")
+        except DuplicateKeyError:
+            print(f"\tWarning date {item['dataAvaliacao']} already inserted")
