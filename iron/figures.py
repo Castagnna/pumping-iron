@@ -34,9 +34,9 @@ def plot_two_axes_line_chart(data, y1, y2):
     st.plotly_chart(fig, use_container_width=True)
 
 
-def plot_stacked_bar_and_line_chart(data):
+def plot_stacked_bar_and_line_chart(data, min_range=70):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    range = [75, max(data["free_of_fat_mass_kg"] + data["fat_mass_kg"])]
+    range = [min_range, max(data["free_of_fat_mass_kg"] + data["fat_mass_kg"])]
     fig.update_yaxes(title_text="Mass kg", secondary_y=False, range=range)
     fig.update_yaxes(title_text="Body fat %", secondary_y=True, showgrid=False)
     fig.update_layout(
