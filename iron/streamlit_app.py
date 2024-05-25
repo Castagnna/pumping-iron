@@ -14,14 +14,13 @@ start, end = st.select_slider(
     value=(sorted(data.index)[2], max(data.index)),
 )
 
-y1 = st.selectbox("Select Y1", data.columns, index=0)
-
-y2 = st.selectbox("Select Y2", data.columns, index=len(data.columns)-5)
-
 filtered = data.loc[(data.index >= start) & (data.index <= end)]
 
 tab1, tab2 = st.tabs(["Comparison", "Mass and body fat"])
 with tab1:
+    y1 = st.selectbox("Select Y1", data.columns, index=0)
+    y2 = st.selectbox("Select Y2", data.columns, index=len(data.columns)-5)
     plot_two_axes_line_chart(filtered, y1, y2)
 with tab2:
-    plot_stacked_bar_and_line_chart(filtered)
+    min_range = st.slider("Select min Y", 0, 70, 70, 5)
+    plot_stacked_bar_and_line_chart(filtered, min_range)
